@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\OwnersController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationNotificationController;
@@ -27,6 +28,9 @@ use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 Route::get('/', function () {
     return view('admin.welcome');
 });
+
+
+
 
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
@@ -88,4 +92,6 @@ Route::middleware('auth:admin')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+
+    Route::resource('owners', OwnersController::class);
 });
