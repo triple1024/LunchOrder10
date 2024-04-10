@@ -25,17 +25,19 @@ use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.welcome');
-});
-
-
-
+// Route::get('/', function () {
+//     return view('admin.welcome');
+// });
 
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth:admin', 'verified'])->name('dashboard');
 
+Route::prefix('canceled-owners')->
+    middleware('auth:admin')->group(function (){
+        Route::get('index',[OwnersController::class,'canceledOwnerIndex'])->name('canceled-owners.index');
+        Route::post('destroy/{owner}',[OwnersController::class,'canceledOwnerDestroy'])->name('canceled-owners.destroy');
+    });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -93,5 +95,6 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 
-    Route::resource('owners', OwnersController::class);
+    Route::resource('owners', OwnersController::class)
+    ->middleware('auth:admin')->except(['show']);
 });
