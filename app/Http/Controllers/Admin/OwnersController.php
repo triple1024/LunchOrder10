@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Throwable;
 
@@ -24,6 +25,7 @@ class OwnersController extends Controller
      */
     public function index()
     {
+           
             // $date_now = Carbon::now();
             // $date_parse = Carbon::parse(now());
             // echo $date_now->year;
