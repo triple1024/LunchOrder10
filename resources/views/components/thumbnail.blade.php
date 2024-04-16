@@ -9,6 +9,7 @@ if($type === 'products'){
 
 @endphp
 
+
 <div class="mt-2">
     @if(empty($filename))
         <img src="{{ asset('images/no_images.jpg') }}">
