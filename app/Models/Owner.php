@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Image;
+use App\Models\Food;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -49,5 +50,10 @@ class Owner extends Authenticatable
     public function image()
     {
         return $this->hasMany(Image::class);
+    }
+
+    public function foods()
+    {
+        return $this->hasMany(Food::class);
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Owner\ImagesController;
+use App\Http\Controllers\Owner\FoodsController;
 use App\Http\Controllers\Owner\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Owner\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Owner\Auth\EmailVerificationNotificationController;
@@ -35,6 +36,18 @@ Route::get('/dashboard', function () {
 
 Route::resource('images', ImagesController::class)
     ->middleware('auth:owners')->except(['show']);
+
+// Route::resource('foods',FoodsController::class)
+// ->middleware('auth:owners')->except(['show']);
+
+Route::prefix('foods')->
+    middleware('auth:owners')->group(function (){
+        Route::get('index',[FoodsController::class,'index'])->name('foods.index');
+        Route::get('create', [FoodsController::class, 'create'])->name('foods.create');
+        Route::get('edit/foods/{food}',[FoodsController::class,'edit'])->name('foods.edit');
+        Route::post('update/foods/{food}',[FoodsController::class,'update'])->name('foods.update');
+        Route::post('destroy/foods/{food}',[FoodsController::class,'destroy'])->name('foods.destroy');
+    });
 
 
 Route::middleware('auth')->group(function () {
