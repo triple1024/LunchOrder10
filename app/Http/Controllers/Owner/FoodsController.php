@@ -110,7 +110,7 @@ class FoodsController extends Controller
 
         return redirect()
         ->route('owner.foods.index')
-        ->with(['message' => '商品登録しました。',
+        ->with(['message' => '食品登録しました。',
         'status' => 'info']);
     }
 
@@ -181,7 +181,7 @@ class FoodsController extends Controller
 
             return redirect()
             ->route('owner.foods.index')
-            ->with(['message' => '商品情報を更新しました。',
+            ->with(['message' => '食品情報を更新しました。',
             'status' => 'info']);
         }
     }
@@ -195,7 +195,7 @@ class FoodsController extends Controller
 
         return redirect()
         ->route('owner.foods.index')
-        ->with(['message' => '商品を削除しました。',
+        ->with(['message' => '食品を削除しました。',
         'status' => 'alert']);
     }
 }

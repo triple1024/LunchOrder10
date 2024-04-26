@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Owner;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UploadImageRequest;
 use App\Services\ImageService;
+use App\Models\Food;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -114,6 +115,19 @@ class ImagesController extends Controller
     public function destroy(string $id)
     {
         $image = Image::findOrFail($id);
+
+        $imageInProducts = Food::where('image1', $image->id)
+        ->get();
+
+        if($imageInProducts){
+            $imageInProducts->each(function ($product) use($image){
+                if($product->image1 === $image->id){
+                    $product->image1 = null;
+                    $product->save();
+                }
+            });
+        }
+
         $filepath = 'public/products/' . $image->filename;
 
         if(Storage::exists($filepath)){

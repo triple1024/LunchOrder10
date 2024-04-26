@@ -12,6 +12,7 @@
                     <x-input-error :messages="$errors->get('image')" class="mt-2" />
                     <form method="post" action="{{ route('owner.foods.update', ['food' => $food->id])}}">
                     @csrf('put')
+                    @method('PUT')
                         <div class="-m-2">
                             <div class="p-2 w-1/2 mx-auto">
                                 <div class="relative">
@@ -117,5 +118,11 @@
                 MicroModal.close(modal); //モーダルを閉じる
             }, )
         })
+        function deletePost(e) {
+            'use strict';
+            if (confirm('本当に削除してもいいですか？')) {
+                document.getElementById('delete_' + e.dataset.id).submit();
+            }
+        }
     </script>
 </x-app-layout>

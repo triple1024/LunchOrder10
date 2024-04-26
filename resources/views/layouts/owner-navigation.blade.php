@@ -18,10 +18,13 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('owner.foods.index')" :active="request()->routeIs('owner.images.index')">
-                        食品管理
+                        食品
+                    </x-nav-link>
+                    <x-nav-link :href="route('owner.rices.index')" :active="request()->routeIs('owner.rices.index')">
+                        米
                     </x-nav-link>
                     <x-nav-link :href="route('owner.images.index')" :active="request()->routeIs('owner.images.index')">
-                        画像管理
+                        画像
                     </x-nav-link>
                 </div>
             </div>
@@ -79,10 +82,13 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('owner.foods.index')" :active="request()->routeIs('owner.images.index')">
-                食品管理
+                食品
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('owner.rices.index')" :active="request()->routeIs('owner.rices.index')">
+                米
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('owner.images.index')" :active="request()->routeIs('owner.images.index')">
-                画像管理
+                画像
             </x-responsive-nav-link>
         </div>
 
