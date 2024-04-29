@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\EatsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,9 +19,9 @@ Route::get('/', function () {
     return view('user.welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('user.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware('auth:users')->group(function (){
+    Route::get('/',[EatsController::class,'index'])->name('eats.index');
+});
 
 
 Route::middleware('auth')->group(function () {

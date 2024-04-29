@@ -10,7 +10,7 @@ class PrimaryCategory extends Model
 {
     use HasFactory;
 
-    public function secondary()
+    public function secondaryCategories()
     {
         return $this->hasMany(SecondaryCategory::class);
     }
