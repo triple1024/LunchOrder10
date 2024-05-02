@@ -14,15 +14,24 @@
                         <h2 class="text-6xl">{{ $primaryCategory->name }}</h2>
                     </div>
                     <div class="flex flex-wrap">
-                        @foreach($primaryCategory->secondaryCategories as $secondaryCategory)
+                        @foreach($primaryCategory->secondary as $secondaryCategory)
                             @if($secondaryCategory->foods->isNotEmpty())
                                 <div class="w-1/2 p-2 md:p-4">
                                     <div class="text-gray-700 text-center mt-2">
                                         <h3 class="text-4xl">{{ $secondaryCategory->name }}</h3>
                                         <ul class="my-10 text-xl">
-                                            @foreach($secondaryCategory->foods as $food)
-                                                <li>{{ $food->name }}</li>
-                                            @endforeach
+                                        @foreach($secondaryCategory->foods as $food)
+                                            @php
+                                                $stockQuantity = $food->stock()->sum('quantity');
+                                            @endphp
+                                            @if($stockQuantity > 0)
+                                                <li>
+                                                    <a href="{{ route('user.eats.show', ['eat' => $food->id])}}">
+                                                        {{ $food->name }}
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        @endforeach
                                         </ul>
                                     </div>
                                 </div>

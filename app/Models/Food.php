@@ -5,8 +5,10 @@ namespace App\Models;
 use App\Models\Image;
 use App\Models\PrimaryCategory;
 use App\Models\SecondaryCategory;
+use App\Models\Stock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 
 class Food extends Model
@@ -37,5 +39,9 @@ class Food extends Model
         return $this->belongsTo(PrimaryCategory::class, 'primary_category_id');
     }
 
+    public function stock()
+    {
+        return $this->hasMany(Stock::class);
+    }
 
 }

@@ -21,6 +21,7 @@ Route::get('/', function () {
 
 Route::middleware('auth:users')->group(function (){
     Route::get('/',[EatsController::class,'index'])->name('eats.index');
+    Route::get('show/{eat}',[EatsController::class,'show'])->name('eats.show');
 });
 
 
