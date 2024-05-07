@@ -71,7 +71,7 @@ class RiceController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'weight' => ['required', 'numeric','between:1,999'],
+            'weight' => ['nullable', 'numeric', 'min:0', 'between:0,999'], // NULL も許容し、0 も許容する
             'is_selling' => ['required', 'boolean']
         ]);
 
@@ -118,7 +118,7 @@ class RiceController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'weight' => ['required', 'numeric','between:1,999'],
+            'weight' => ['nullable', 'numeric', 'min:0', 'between:0,999'], // NULL も許容し、0 も許容する
             'is_selling' => ['required', 'boolean']
         ]);
 

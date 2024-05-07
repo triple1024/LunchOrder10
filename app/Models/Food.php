@@ -21,6 +21,7 @@ class Food extends Model
         'is_selling',
         'sort_order',
         'secondary_category_id',
+        'can_choose_bread',
         'image1',
     ];
 

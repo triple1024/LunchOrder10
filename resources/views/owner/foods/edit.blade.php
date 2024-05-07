@@ -63,12 +63,23 @@
                                         @foreach($categories as $category)
                                             <optgroup label="{{ $category->name }}">
                                             @foreach($category->secondary as $secondary)
-                                                <option value="{{ $secondary->id }}" >
+                                                <option value="{{ $secondary->id }}" @if( $secondary->id === $food->secondary_category_id) selected @endif>
                                                     {{ $secondary->name}}
                                                 </option>
                                             @endforeach
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            <div class="p-2 w-1/2 mx-auto" id="bread-selection" @if($food->secondary_category_id === 3 || $food->secondary_category_id === 4) style="display: none;" @endif>
+                                <label for="can_choose_bread" class="leading-7 text-sm text-gray-600">パン選択</label>
+                                <div class="relative flex justify-around">
+                                    <div>
+                                        <input class="mr-2" type="radio" name="can_choose_bread" value="1" @if($food->can_choose_bread === 1){ checked } @endif >パン選択可
+                                    </div>
+                                    <div>
+                                        <input class="mr-2" type="radio" name="can_choose_bread" value="0" @if($food->can_choose_bread === 0){ checked } @endif >パン選択不可
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -118,6 +129,21 @@
                 MicroModal.close(modal); //モーダルを閉じる
             }, )
         })
+
+            document.addEventListener("DOMContentLoaded", function() {
+            var categorySelect = document.getElementById('category');
+            var breadSelection = document.getElementById('bread-selection');
+
+            categorySelect.addEventListener('change', function() {
+                var selectedCategory = categorySelect.value;
+                if(selectedCategory === '3' || selectedCategory === '4') {
+                    breadSelection.style.display = 'none'; // カテゴリーが3または4の場合、パン選択を非表示にする
+                } else {
+                    breadSelection.style.display = 'block'; // それ以外の場合、パン選択を表示する
+                }
+            });
+        });
+
         function deletePost(e) {
             'use strict';
             if (confirm('本当に削除してもいいですか？')) {

@@ -36,18 +36,27 @@
                                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
                             </div>
                             <div class="p-2 w-1/2 mx-auto">
-                                <div class="relative">
-                                    <label for="category" class="leading-7 text-sm text-gray-600">カテゴリー</label>
-                                    <select name="category" id="category" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                        @foreach($categories as $category)
+                                <label for="category" class="leading-7 text-sm text-gray-600">カテゴリー</label>
+                                <select name="category" id="category" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                    @foreach($categories as $category)
                                             <optgroup label="{{ $category->name }}">
                                             @foreach($category->secondary as $secondary)
                                                 <option value="{{ $secondary->id }}" >
                                                     {{ $secondary->name}}
                                                 </option>
                                             @endforeach
-                                        @endforeach
-                                    </select>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="p-2 w-1/2 mx-auto" id="bread-selection">
+                                <label for="can_choose_bread" class="leading-7 text-sm text-gray-600">パン選択</label>
+                                <div class="relative flex justify-around">
+                                    <div>
+                                        <input class="mr-2" type="radio" name="can_choose_bread" value="1">パン選択可
+                                    </div>
+                                    <div>
+                                        <input class="mr-2" type="radio" name="can_choose_bread" value="0" checked>パン選択不可
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -88,6 +97,20 @@
                 document.getElementById(imageName + '_hidden').value = imageId
                 MicroModal.close(modal); //モーダルを閉じる
             }, )
-        })
+        });
+
+            document.addEventListener("DOMContentLoaded", function() {
+            var categorySelect = document.getElementById('category');
+            var breadSelection = document.getElementById('bread-selection');
+
+            categorySelect.addEventListener('change', function() {
+                var selectedCategory = categorySelect.value;
+                if(selectedCategory === '3' || selectedCategory === '4') {
+                    breadSelection.style.display = 'none'; // カテゴリーが3または4の場合、パン選択を非表示にする
+                } else {
+                    breadSelection.style.display = 'block'; // それ以外の場合、パン選択を表示する
+                }
+            });
+        });
     </script>
 </x-app-layout>

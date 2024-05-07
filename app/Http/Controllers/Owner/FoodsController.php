@@ -64,7 +64,7 @@ class FoodsController extends Controller
      */
     public function create()
     {
-        // $shops = Shop::where('owner_id', Auth::id())
+        // $food = Food::where('owner_id', Auth::id())
         // ->select('id','name')
         // ->get();
 
@@ -93,6 +93,7 @@ class FoodsController extends Controller
                     'sort_order' => $request->sort_order,
                     'secondary_category_id' => $request->category,
                     'image1' => $request->image1,
+                    'can_choose_bread' => $request->can_choose_bread,
                     'is_selling' => $request->is_selling
                 ]);
 
@@ -159,6 +160,7 @@ class FoodsController extends Controller
                         $food->secondary_category_id = $request->category;
                         $food->image1 = $request->image1;
                         $food->is_selling = $request->is_selling;
+                        $food->can_choose_bread = $request->can_choose_bread;
                         $food->save();
 
                         if($request->type === \Constant::FOOD_LIST['add']){

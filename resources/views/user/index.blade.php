@@ -39,16 +39,8 @@
                         @endforeach
                     </div>
                 @endforeach
-                <h3 class="text-5xl">ご飯のみ</h3>
-                <div class="flex gap-4">
-                    @foreach($rices as $rice)
-                    <div class="bg-gray-200 p-4 mt-10">
-                        <ul class="my-4 text-3xl">
-                            <li>{{ $rice->name }}</li>
-                            <li>{{ $rice->weight }}グラム</li>
-                        </ul>
-                    </div>
-                    @endforeach
+                <div class="flex flex-wrap w-full my-8 flex-col items-center text-center">
+                        <h2 class="text-6xl">ご飯のみ</h2>
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\EatsController;
+use App\Http\Controllers\User\CartController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +23,12 @@ Route::get('/', function () {
 Route::middleware('auth:users')->group(function (){
     Route::get('/',[EatsController::class,'index'])->name('eats.index');
     Route::get('show/{eat}',[EatsController::class,'show'])->name('eats.show');
+});
+
+Route::prefix('cart')->
+    middleware('auth:users')->group(function (){
+    Route::get('/',[CartController::class, 'index'])->name('cart.index');
+    Route::post('add',[CartController::class,'add'])->name('cart.add');
 });
 
 
