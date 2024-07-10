@@ -41,6 +41,7 @@
                                             @endfor
                                             </select>
                                             <label class="mr-3">ご飯</label>
+
                                             <select name="rice_id" class="rounded border appearance-none border-gray-300 py-2 px-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-4 pr-4" @if($food->secondary_category_id !== 1 && $food->secondary_category_id !== 2) disabled @endif>
                                                 @if($food->secondary_category_id !== 1 && $food->secondary_category_id !== 2)
                                                     <option value="" selected disabled hidden>選択できません</option>

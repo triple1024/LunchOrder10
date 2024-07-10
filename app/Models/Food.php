@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Cart;
 use App\Models\Image;
 use App\Models\PrimaryCategory;
 use App\Models\SecondaryCategory;
@@ -45,4 +46,9 @@ class Food extends Model
         return $this->hasMany(Stock::class);
     }
 
+
+    public function cart_food()
+    {
+        return $this->belongsToMany(Cart::class, 'cartfoods')->withPivot('quantity')->withTimestamps();
+    }
 }

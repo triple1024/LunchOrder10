@@ -20,10 +20,87 @@ class StockSeeder extends Seeder
                 'quantity' => 8,
             ],
             [
-                'food_id' => 1,
+                'food_id' => 2,
                 'type' =>  1,
-                'quantity' => -5,
-            ]
+                'quantity' => 4,
+            ],
+            [
+                'food_id' => 3,
+                'type' =>  1,
+                'quantity' => 9,
+            ],
+            [
+                'food_id' => 4,
+                'type' =>  1,
+                'quantity' => 6,
+            ],
+            [
+                'food_id' => 5,
+                'type' =>  1,
+                'quantity' => 7,
+            ],
+            [
+                'food_id' => 6,
+                'type' =>  1,
+                'quantity' => 8,
+            ],
+            [
+                'food_id' => 7,
+                'type' =>  1,
+                'quantity' => 5,
+            ],
+            [
+                'food_id' => 8,
+                'type' =>  1,
+                'quantity' => 8,
+            ],
+            [
+                'food_id' => 9,
+                'type' =>  1,
+                'quantity' => 10,
+            ],
+            [
+                'food_id' => 10,
+                'type' =>  1,
+                'quantity' => 8,
+            ],
+            [
+                'food_id' => 11,
+                'type' =>  1,
+                'quantity' => 6,
+            ],
+            [
+                'food_id' => 12,
+                'type' =>  1,
+                'quantity' => 7,
+            ],
+            [
+                'food_id' => 13,
+                'type' =>  1,
+                'quantity' => 6,
+            ],
+            [
+                'food_id' => 14,
+                'type' =>  1,
+                'quantity' => 5,
+            ],
+            [
+                'food_id' => 15,
+                'type' =>  1,
+                'quantity' => 9,
+            ],
+            [
+                'food_id' => 16,
+                'type' =>  1,
+                'quantity' => 4,
+            ],
+            [
+                'food_id' => 17,
+                'type' =>  1,
+                'quantity' => 6,
+            ],
+
+
         ]);
     }
 }

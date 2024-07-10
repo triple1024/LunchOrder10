@@ -19,6 +19,7 @@ return new class extends Migration
             ->onDelete('cascade');
             $table->foreignId('rice_id')
             ->constrained()
+            ->default(null)
             ->nullable()
             ->onUpdate('cascade')
             ->onDelete('cascade');
@@ -35,6 +36,11 @@ return new class extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
             $table->integer('quantity');
+                 // 'user_id'外部キーを追加
+            $table->foreignId('user_id')
+            ->constrained()
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }

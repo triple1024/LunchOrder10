@@ -26,12 +26,12 @@ class CategorySeeder extends Seeder
 
         DB::table('secondary_categories')->insert([
             [
-                'name' => '肉',
+                'name' => '肉系',
                 'sort_order' => '1',
                 'primary_category_id' => '1',
             ],
             [
-                'name' => '魚',
+                'name' => '魚介系',
                 'sort_order' => '2',
                 'primary_category_id' => '1',
             ],

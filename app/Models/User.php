@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Food;
+use App\Models\Rice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -46,8 +47,14 @@ class User extends Authenticatable
 
     public function foods()
     {
-        return $this->belongsToMany(Food::class, 'cart_food')
-            ->withPivot('quantity')
-            ->withTimestamps();
+        return $this->belongsToMany(Food::class, 'cart_food', 'user_id', 'food_id')
+        ->withPivot('quantity')
+        ->withTimestamps();
     }
+
+    public function rices()
+    {
+        return $this->belongsTo(Rice::class, 'rice_id');
+    }
+
 }

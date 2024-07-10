@@ -76,11 +76,6 @@ class ImageSeeder extends Seeder
             ],
             [
                 'owner_id' => '1',
-                'filename' => 'sample13.jpg',
-                'title' => '',
-            ],
-            [
-                'owner_id' => '1',
                 'filename' => 'sample14.jpg',
                 'title' => '',
             ],

@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Models\Food;
 use App\Models\User;
+use App\Models\Rice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Cart extends Model
 {
@@ -25,9 +27,16 @@ class Cart extends Model
     {
         return $this->belongsTo(Food::class);
     }
+    public function rice()
+    {
+        return $this->belongsTo(Rice::class, 'rice_id');
+    }
 
     public function cartfoods()
     {
-        return $this->belongsToMany(Food::class, 'cart_food')->withPivot('quantity')->withTimestamps();
+        return $this->belongsToMany(Food::class, 'cart_food', 'cart_id', 'food_id')
+            ->withPivot('quantity')
+            ->withTimestamps();
     }
 }
+

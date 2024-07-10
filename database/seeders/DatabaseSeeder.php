@@ -20,6 +20,9 @@ class DatabaseSeeder extends Seeder
             ImageSeeder::class,
             CategorySeeder::class,
             UserSeeder::class,
+            FoodSeeder::class,
+            StockSeeder::class,
+            RiceSeeder::class,
         ]);
     }
 }
