@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\EatsController;
 use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,10 +26,17 @@ Route::middleware('auth:users')->group(function (){
     Route::get('show/{eat}',[EatsController::class,'show'])->name('eats.show');
 });
 
+Route::prefix('orders')->
+    middleware('auth:users')->group(function (){
+    Route::get('/',[OrderController::class,'index'])->name('orders.index');
+});
+
 Route::prefix('cart')->
     middleware('auth:users')->group(function (){
     Route::get('/',[CartController::class, 'index'])->name('cart.index');
     Route::post('add',[CartController::class,'add'])->name('cart.add');
+    Route::post('delete/{eat}',[CartController::class,'delete'])->name('cart.delete');
+    Route::post('checkout',[CartController::class,'checkout'])->name('cart.checkout');
 });
 
 

@@ -45,6 +45,11 @@ class CategorySeeder extends Seeder
                 'sort_order' => '4',
                 'primary_category_id' => '2',
             ],
+            [
+                'name' => 'ご飯のみ',
+                'sort_order' => '5',
+                'primary_category_id' => '1',
+            ],
         ]);
     }
 }

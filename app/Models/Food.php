@@ -51,4 +51,8 @@ class Food extends Model
     {
         return $this->belongsToMany(Cart::class, 'cartfoods')->withPivot('quantity')->withTimestamps();
     }
+    public function rice()
+    {
+        return $this->belongsTo(Rice::class);
+    }
 }

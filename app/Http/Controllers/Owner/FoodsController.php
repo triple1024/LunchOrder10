@@ -138,22 +138,32 @@ class FoodsController extends Controller
      */
     public function update(FoodRequest $request, string $id)
     {
+        // dd($request->all());
+
         $request->validate([
-            'current_quantity' => 'required|integer',
+            'current_quantity' => 'required|integer|min:0',
         ]);
+
+        Log::info('Request data: ', $request->all());
 
         $food = Food::findOrFail($id);
         $quantity = Stock::where('food_id',$food->id)
         ->sum('quantity');
 
-        if($request->current_quantity !== $quantity){
+          // デバッグのために $quantity の値をログに出力
+        Log::info('Current quantity from DB: ' . $quantity);
+
+        if((int)$request->current_quantity !== (int)$quantity){
             $id = $request->route()->parameter('food');
+            Log::info('Quantity mismatch, redirecting back to edit page');
             return redirect()->route('owner.foods.edit',['food' => $id])
             ->with(['message' => '在庫数が変更されています。再度確認して下さい。',
                 'status' => 'alert']);
         } else {
-
+                Log::info('Quantities match, proceeding to update');
             try{
+                Log::info('Starting transaction for food update');
+
                 DB::transaction(function () use ($request, $food) {
 
                         $food->name = $request->name;
@@ -163,21 +173,31 @@ class FoodsController extends Controller
                         $food->can_choose_bread = $request->can_choose_bread;
                         $food->save();
 
-                        if($request->type === \Constant::FOOD_LIST['add']){
-                            $newQuantity = $request->quantity;
-                        }
-                        elseif($request->type === \Constant::FOOD_LIST['reduce']){
-                            $newQuantity = $request->quantity * -1;
-                        }
+                        Log::info('Food updated: ', $food->toArray());
+
+                        // if($request->type === \Constant::FOOD_LIST['add']){
+                        //     $newQuantity = $request->quantity;
+                        // }
+                        // elseif($request->type === \Constant::FOOD_LIST['reduce']){
+                        //     $newQuantity = $request->quantity * -1;
+                        // }
+
+                        $newQuantity = ($request->type === \Constant::FOOD_LIST['reduce']) ? $request->quantity * -1 : $request->quantity;
 
                     Stock::create([
                         'food_id' => $food->id,
                         'type' => $request->type,
                         'quantity' => $newQuantity
                     ]);
+
+                    Log::info('Stock updated with new quantity: ' . $newQuantity);
+
                 },2);
-            }catch(Throwable $e){
-                Log::error($e);
+
+                Log::info('Transaction completed successfully');
+
+            } catch (Throwable $e) {
+                Log::error('Transaction error: ' . $e->getMessage());
                 throw $e;
             }
 

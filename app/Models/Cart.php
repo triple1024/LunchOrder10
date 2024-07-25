@@ -16,6 +16,7 @@ class Cart extends Model
     protected $fillable = [
         'user_id',
         'rice_id',
+        'quantity',
     ];
 
     public function user()
@@ -37,6 +38,11 @@ class Cart extends Model
         return $this->belongsToMany(Food::class, 'cart_food', 'cart_id', 'food_id')
             ->withPivot('quantity')
             ->withTimestamps();
+    }
+
+    public function riceItem()
+    {
+        return $this->belongsTo(Rice::class, 'rice_id');
     }
 }
 

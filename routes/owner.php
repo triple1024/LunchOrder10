@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Owner\ImagesController;
 use App\Http\Controllers\Owner\FoodsController;
+use App\Http\Controllers\Owner\OrderListController;
 use App\Http\Controllers\Owner\RiceController;
 use App\Http\Controllers\Owner\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Owner\Auth\ConfirmablePasswordController;
@@ -39,6 +40,9 @@ Route::resource('images', ImagesController::class)
     ->middleware('auth:owners')->except(['show']);
 
 Route::resource('foods',FoodsController::class)
+->middleware('auth:owners')->except(['show']);
+
+Route::resource('orders',OrderListController::class)
 ->middleware('auth:owners')->except(['show']);
 
 Route::resource('rices',RiceController::class)

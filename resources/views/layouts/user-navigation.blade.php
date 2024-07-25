@@ -17,6 +17,12 @@
                     <x-nav-link :href="route('user.eats.index')" :active="request()->routeIs('user.eats.index')">
                         {{ __('ホーム') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('user.cart.index')" :active="request()->routeIs('user.cart.index')">
+                        カートを表示
+                    </x-nav-link>
+                    <x-nav-link :href="route('user.orders.index')" :active="request()->routeIs('user.orders.index')">
+                        注文履歴
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -71,6 +77,12 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('user.eats.index')" :active="request()->routeIs('user.dashboard')">
                 {{ __('ホーム') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('user.cart.index')" :active="request()->routeIs('user.cart.index')">
+                        カートを表示
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('user.orders.index')" :active="request()->routeIs('user.orders.index')">
+                        注文履歴
             </x-responsive-nav-link>
         </div>
 
