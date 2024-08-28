@@ -29,6 +29,12 @@
                     <x-nav-link :href="route('owner.orders.index')" :active="request()->routeIs('owner.orders.index')">
                         注文履歴
                     </x-nav-link>
+                    <x-nav-link :href="route('owner.stocks.index')" :active="request()->routeIs('owner.stocks.index')">
+                        在庫管理
+                    </x-nav-link>
+                    <x-nav-link :href="route('owner.cooks.index')" :active="request()->routeIs('owner.cooks.index')">
+                        本日の合数
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -96,6 +102,12 @@
             <x-responsive-nav-link :href="route('owner.orders.index')" :active="request()->routeIs('owner.orders.index')">
                 注文履歴
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('owner.stocks.index')" :active="request()->routeIs('owner.stocks.index')">
+                在庫管理
+            </x-responsive-nav-link>
+            <x-responsiveーnav-link :href="route('owner.cooks.index')" :active="request()->routeIs('owner.cooks.index')">
+                本日の合数
+            </x-responsiveーnav-link>
         </div>
 
         <!-- Responsive Settings Options -->

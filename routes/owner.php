@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Owner\CookController;
 use App\Http\Controllers\Owner\ImagesController;
 use App\Http\Controllers\Owner\FoodsController;
 use App\Http\Controllers\Owner\OrderListController;
 use App\Http\Controllers\Owner\RiceController;
+use App\Http\Controllers\Owner\StockController;
+use App\Http\Controllers\Owner\UserController;
 use App\Http\Controllers\Owner\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Owner\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Owner\Auth\EmailVerificationNotificationController;
@@ -36,14 +39,30 @@ Route::get('/dashboard', function () {
     return view('owner.dashboard');
 })->middleware(['auth:owners'])->name('dashboard');
 
+Route::resource('users', UserController::class)
+    ->middleware('auth:owners')->except(['show']);
+
 Route::resource('images', ImagesController::class)
     ->middleware('auth:owners')->except(['show']);
 
 Route::resource('foods',FoodsController::class)
 ->middleware('auth:owners')->except(['show']);
 
-Route::resource('orders',OrderListController::class)
-->middleware('auth:owners')->except(['show']);
+Route::middleware('auth:owners')->group(function () {
+    Route::resource('orders', OrderListController::class)->except(['show']);
+    Route::delete('/orders/{order}/cancel', [OrderListController::class, 'cancel'])->name('orders.cancel');
+});
+
+
+Route::resource('cooks', CookController::class)
+    ->middleware('auth:owners')->except(['show']);
+
+
+Route::middleware('auth:owners')->group(function (){
+    Route::resource('stocks',StockController::class)->except(['show']);
+    Route::post('/stocks/reorder', [StockController::class, 'reorder'])->name('stocks.reorder');
+    Route::get('/stocks/data', [StockController::class, 'getStockData'])->name('stocks.data');
+});
 
 Route::resource('rices',RiceController::class)
 ->middleware('auth:owners')->except(['show']);

@@ -14,4 +14,9 @@ class PrimaryCategory extends Model
     {
         return $this->hasMany(SecondaryCategory::class);
     }
+
+    public function foods()
+    {
+        return $this->hasMany(Food::class, 'primary_category_id');
+    }
 }

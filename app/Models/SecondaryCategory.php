@@ -12,7 +12,7 @@ class SecondaryCategory extends Model
     use HasFactory;
     public function primary()
     {
-        return $this->belongsTo(PrimaryCategory::class);
+        return $this->belongsTo(PrimaryCategory::class, 'primary_category_id');
     }
 
     public function foods()

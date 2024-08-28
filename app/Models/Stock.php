@@ -15,6 +15,12 @@ class Stock extends Model
     protected $fillable = [
         'food_id',
         'type',
-        'quantity'
+        'quantity',
+        'sort_order'
     ];
+
+    public function food()
+    {
+        return $this->belongsTo(Food::class, 'food_id');
+    }
 }

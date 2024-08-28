@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Food;
+use App\Models\PrimaryCategory;
+use App\Models\Rice;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,5 +33,11 @@ class Order extends Model
     {
         return $this->belongsToMany(Food::class, 'order_food')->withPivot('quantity')->withTimestamps();
     }
+
+    public function primaryCategory()
+    {
+        return $this->belongsTo(PrimaryCategory::class);
+    }
+
 }
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Cart;
 use App\Models\Image;
+use App\Models\Order;
 use App\Models\PrimaryCategory;
 use App\Models\SecondaryCategory;
 use App\Models\Stock;
@@ -38,7 +39,14 @@ class Food extends Model
 
     public function primaryCategory()
     {
-        return $this->belongsTo(PrimaryCategory::class, 'primary_category_id');
+        return $this->hasOneThrough(
+            PrimaryCategory::class,
+            SecondaryCategory::class,
+            'id',                  // SecondaryCategory のローカルキー
+            'id',                  // PrimaryCategory のローカルキー
+            'secondary_category_id', // Food モデルの外部キー
+            'primary_category_id'  // SecondaryCategory モデルの外部キー
+        );
     }
 
     public function stock()
@@ -54,5 +62,10 @@ class Food extends Model
     public function rice()
     {
         return $this->belongsTo(Rice::class);
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_food')->withPivot('quantity')->withTimestamps();
     }
 }

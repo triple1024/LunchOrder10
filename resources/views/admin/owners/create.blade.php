@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            オーナー登録
+            スタッフ登録
         </h2>
     </x-slot>
 
@@ -12,7 +12,7 @@
                     <section class="text-gray-600 body-font relative">
                         <div class="container px-5 mx-auto">
                             <div class="flex flex-col text-center w-full mb-12">
-                                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">オーナー登録</h1>
+                                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">スタッフ登録</h1>
                             </div>
                             <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                 <form action="{{ route('admin.owners.store') }}" method="post">
@@ -20,7 +20,7 @@
                                     <div class="-m-2">
                                         <div class="p-2 w-1/2 mx-auto">
                                             <div class="relative">
-                                                <label for="name" class="leading-7 text-sm text-gray-600">オーナー名</label>
+                                                <label for="name" class="leading-7 text-sm text-gray-600">スタッフ名</label>
                                                 <input type="text" id="name" name="name" value="{{ old('name') }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                             </div>
                                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
