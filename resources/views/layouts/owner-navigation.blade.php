@@ -17,6 +17,9 @@
                     <x-nav-link :href="route('owner.dashboard')" :active="request()->routeIs('owner.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('owner.users.index')" :active="request()->routeIs('owner.users.index')">
+                        ユーザー管理
+                    </x-nav-link>
                     <x-nav-link :href="route('owner.foods.index')" :active="request()->routeIs('owner.images.index')">
                         食品
                     </x-nav-link>
@@ -89,6 +92,9 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('owner.dashboard')" :active="request()->routeIs('owner.dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('owner.users.index')" :active="request()->routeIs('owner.users.index')">
+                ユーザー管理
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('owner.foods.index')" :active="request()->routeIs('owner.images.index')">
                 食品

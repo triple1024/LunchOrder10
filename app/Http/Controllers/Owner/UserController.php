@@ -18,7 +18,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:admin');
+        $this->middleware('auth:owners');
     }
 
     /**
@@ -30,7 +30,7 @@ class UserController extends Controller
             $users = User::select('id','name','email','created_at')
             ->paginate(5);
 
-            return view('owners.users.index', compact('users'));
+            return view('owner.users.index', compact('users'));
     }
 
     /**
@@ -38,7 +38,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('owners.users.create');
+        return view('owner.users.create');
     }
 
     /**
@@ -60,7 +60,7 @@ class UserController extends Controller
         ]);
 
         return redirect()
-        ->route('owners.users.index')
+        ->route('owner.users.index')
         ->with(['message' => 'ユーザー登録を実施しました。',
         'status' => 'info']);
     }
@@ -78,9 +78,9 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $User = User::findOrFail($id);
+        $user = User::findOrFail($id);
         // dd($User);
-        return view('owners.users.edit', compact('user'));
+        return view('owner.users.edit', compact('user'));
     }
 
     /**
@@ -95,7 +95,7 @@ class UserController extends Controller
         $user->save();
 
         return redirect()
-        ->route('owners.users.index')
+        ->route('owner.users.index')
         ->with(['message' => 'ユーザー情報を更新しました。',
         'status' => 'info']);
 
@@ -111,18 +111,18 @@ class UserController extends Controller
         // dd('削除処理');
 
         return redirect()
-        ->route('owners.users.index')
+        ->route('owner.users.index')
         ->with(['message' => 'ユーザー情報を削除しました。',
         'status' => 'alert']);
     }
 
-    public function canceledUserIndex(){
-        $canceledUsers = User::onlyTrashed()->get();
-        return view('owners.canceled-users', compact('canceledUsers'));
-    }
+    // public function canceledUserIndex(){
+    //     $canceledUsers = User::onlyTrashed()->get();
+    //     return view('owner.canceled-users', compact('canceledUsers'));
+    // }
 
-    public function canceledUserDestroy($id){
-        User::onlyTrashed()->findOrFail($id)->forceDelete();
-        return redirect()->route('owners.canceled-users.index');
-    }
+    // public function canceledUserDestroy($id){
+    //     User::onlyTrashed()->findOrFail($id)->forceDelete();
+    //     return redirect()->route('owner.canceled-users.index');
+    // }
 }

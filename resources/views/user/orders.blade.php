@@ -23,7 +23,11 @@
                                 @foreach ($order->foods as $food)
                                     <tr>
                                         <td class="border px-4 py-2">{{ $order->order_date->format('Y-m-d H:i') }}</td>
-                                        <td class="border px-4 py-2">{{ $food->name }}</td>
+                                        <td class="border px-4 py-2">
+                                            <a class="text-lg hover:text-red-500" href="{{ route('user.eats.show', ['eat' => $food->id]) }}">
+                                                {{ $food->name }}
+                                            </a>
+                                        </td>
                                         <td class="border px-4 py-2">{{ $food->pivot->quantity }}</td>
                                         <td class="border px-4 py-2">
                                             @if (in_array($food->secondary_category_id, [3, 4]))
