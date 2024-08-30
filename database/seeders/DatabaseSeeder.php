@@ -17,11 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             OwnerSeeder::class,
-            ImageSeeder::class,
             CategorySeeder::class,
             UserSeeder::class,
-            FoodSeeder::class,
-            StockSeeder::class,
             RiceSeeder::class,
         ]);
     }
