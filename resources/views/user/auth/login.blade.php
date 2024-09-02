@@ -1,10 +1,17 @@
 <x-guest-layout>
+    <div class="bg-indigo-600 text-white text-center py-4 rounded-md mb-6">
+        <h2 class="text-2xl font-bold">昼食注文画面へ</h2>
+    </div>
+
+    <!-- Owner Login Redirect -->
+    <div class="mb-4  text-gray-600">
+        スタッフは<a href="{{ route('owner.login') }}" class="underline text-blue-600 hover:text-blue-900">こちらからログイン</a>
+    </div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form method="POST" action="{{ route('user.login') }}">
         @csrf
-        ユーザー用
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
@@ -33,11 +40,11 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            @if (Route::has('user.password.request'))
+            <!-- @if (Route::has('user.password.request'))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('user.password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
-            @endif
+            @endif -->
 
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
