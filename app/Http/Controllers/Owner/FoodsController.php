@@ -137,77 +137,67 @@ class FoodsController extends Controller
      * Update the specified resource in storage.
      */
     public function update(FoodRequest $request, string $id)
-    {
-        // dd($request->all());
+{
+    $request->validate([
+        'current_quantity' => 'required|integer|min:0',
+        'can_choose_bread' => 'required|boolean',
+    ]);
 
-        $request->validate([
-            'current_quantity' => 'required|integer|min:0',
-            'can_choose_bread' => 'required|boolean',
-        ]);
+    Log::info('Request data: ', $request->all());
 
-        Log::info('Request data: ', $request->all());
+    $food = Food::findOrFail($id);
+    $quantity = Stock::where('food_id', $food->id)->sum('quantity');
 
-        $food = Food::findOrFail($id);
-        $quantity = Stock::where('food_id',$food->id)
-        ->sum('quantity');
+    Log::info('Current quantity from DB: ' . $quantity);
 
-          // デバッグのために $quantity の値をログに出力
-        Log::info('Current quantity from DB: ' . $quantity);
-
-        if((int)$request->current_quantity !== (int)$quantity){
-            $id = $request->route()->parameter('food');
-            Log::info('Quantity mismatch, redirecting back to edit page');
-            return redirect()->route('owner.foods.edit',['food' => $id])
+    if ((int)$request->current_quantity !== (int)$quantity) {
+        Log::info('Quantity mismatch, redirecting back to edit page');
+        return redirect()->route('owner.foods.edit', ['food' => $id])
             ->with(['message' => '在庫数が変更されています。再度確認して下さい。',
                 'status' => 'alert']);
-        } else {
-                Log::info('Quantities match, proceeding to update');
-            try{
-                Log::info('Starting transaction for food update');
+    } else {
+        Log::info('Quantities match, proceeding to update');
 
-                DB::transaction(function () use ($request, $food) {
+        try {
+            Log::info('Starting transaction for food update');
 
-                        $food->name = $request->name;
-                        $food->secondary_category_id = $request->category;
-                        $food->image1 = $request->image1;
-                        $food->is_selling = $request->is_selling;
-                        $food->can_choose_bread = $request->can_choose_bread;
-                        $food->save();
+            DB::transaction(function () use ($request, $food) {
+                $food->name = $request->name;
+                $food->secondary_category_id = $request->category;
+                $food->image1 = $request->image1;
+                $food->is_selling = $request->is_selling;
 
-                        Log::info('Food updated: ', $food->toArray());
+                // Ensure can_choose_bread is always set and is a boolean
+                $food->can_choose_bread = isset($request->can_choose_bread) ? (bool)$request->can_choose_bread : false;
+                $food->save();
 
-                        // if($request->type === \Constant::FOOD_LIST['add']){
-                        //     $newQuantity = $request->quantity;
-                        // }
-                        // elseif($request->type === \Constant::FOOD_LIST['reduce']){
-                        //     $newQuantity = $request->quantity * -1;
-                        // }
+                Log::info('Food updated: ', $food->toArray());
 
-                        $newQuantity = ($request->type === \Constant::FOOD_LIST['reduce']) ? $request->quantity * -1 : $request->quantity;
+                $newQuantity = ($request->type === \Constant::FOOD_LIST['reduce']) ? $request->quantity * -1 : $request->quantity;
 
-                    Stock::create([
-                        'food_id' => $food->id,
-                        'type' => $request->type,
-                        'quantity' => $newQuantity
-                    ]);
+                Stock::create([
+                    'food_id' => $food->id,
+                    'type' => $request->type,
+                    'quantity' => $newQuantity
+                ]);
 
-                    Log::info('Stock updated with new quantity: ' . $newQuantity);
+                Log::info('Stock updated with new quantity: ' . $newQuantity);
+            }, 2);
 
-                },2);
+            Log::info('Transaction completed successfully');
 
-                Log::info('Transaction completed successfully');
+        } catch (Throwable $e) {
+            Log::error('Transaction error: ' . $e->getMessage());
+            throw $e;
+        }
 
-            } catch (Throwable $e) {
-                Log::error('Transaction error: ' . $e->getMessage());
-                throw $e;
-            }
-
-            return redirect()
+        return redirect()
             ->route('owner.foods.index')
             ->with(['message' => '食品情報を更新しました。',
             'status' => 'info']);
-        }
     }
+}
+
 
     /**
      * Remove the specified resource from storage.
