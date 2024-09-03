@@ -142,6 +142,7 @@ class FoodsController extends Controller
 
         $request->validate([
             'current_quantity' => 'required|integer|min:0',
+            'can_choose_bread' => 'required|boolean',
         ]);
 
         Log::info('Request data: ', $request->all());
