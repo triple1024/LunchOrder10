@@ -28,7 +28,8 @@ class FoodRequest extends FormRequest
             // 'food_id' => 'required|exists:food,id',
             'category' => 'required|exists:secondary_categories,id',
             'image1' => 'nullable|exists:images,id',
-            'is_selling' => 'required|boolean'
+            'is_selling' => 'required|boolean',
+            'can_choose_bread' => 'required|boolean'
 
         ];
     }
