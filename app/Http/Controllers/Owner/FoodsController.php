@@ -138,6 +138,8 @@ class FoodsController extends Controller
      */
     public function update(FoodRequest $request, string $id)
 {
+    Log::info('Request data before validation: ', $request->all());
+
     $request->validate([
         'current_quantity' => 'required|integer|min:0',
         'can_choose_bread' => 'required|boolean',
@@ -197,7 +199,6 @@ class FoodsController extends Controller
             'status' => 'info']);
     }
 }
-
 
     /**
      * Remove the specified resource from storage.
