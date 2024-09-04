@@ -13,11 +13,7 @@
                         @foreach ($cartFoodsWithRice as $food)
                             <div class="md:flex md:items-center mb-4">
                                 <div class="md:w-3/12">
-                                    @if($food->foodsImage->filename !== null)
-                                        <img src="{{ asset('storage/products/' . $food->foodsImage->filename ) }}">
-                                    @else
-                                        <img src="">
-                                    @endif
+                                    <x-thumbnail filename="{{$food->foodsImage->filename ?? ''}}" type="products" />
                                 </div>
                                 <div class="md:w-4/12 md:ml-2">
                                     {{ $food->name }}
