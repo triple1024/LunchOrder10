@@ -75,10 +75,10 @@
                                 <label for="can_choose_bread" class="leading-7 text-sm text-gray-600">パン選択</label>
                                 <div class="relative flex justify-around">
                                     <div>
-                                        <input class="mr-2" type="radio" name="can_choose_bread" value="1" @if($food->can_choose_bread === 1){ checked } @endif >パン選択可
+                                        <input class="mr-2" type="radio" name="can_choose_bread" value="1" @if($food->can_choose_bread){ checked } @endif >パン選択可
                                     </div>
                                     <div>
-                                        <input class="mr-2" type="radio" name="can_choose_bread" value="0" @if($food->can_choose_bread === 0){ checked } @endif >パン選択不可
+                                        <input class="mr-2" type="radio" name="can_choose_bread" value="0" @if($food->can_choose_bread === false){ checked } @endif >パン選択不可
                                     </div>
                                 </div>
                             </div>
@@ -89,10 +89,10 @@
                         <div class="p-2 w-1/2 mx-auto">
                             <div class="relative flex justify-around">
                                 <div>
-                                    <input class="mr-2" type="radio" name="is_selling" value="1" @if($food->is_selling === 1){ checked } @endif >在庫あり
+                                    <input class="mr-2" type="radio" name="is_selling" value="1" @if($food->is_selling){ checked } @endif >在庫あり
                                 </div>
                                 <div>
-                                    <input class="mr-2" type="radio" name="is_selling" value="0" @if($food->is_selling === 0){ checked } @endif >在庫なし
+                                    <input class="mr-2" type="radio" name="is_selling" value="0" @if($food->is_selling === false){ checked } @endif >在庫なし
                                 </div>
                             </div>
                         </div>
