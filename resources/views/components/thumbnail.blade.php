@@ -1,21 +1,21 @@
 @php
-
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
-if($type === 'shops'){
-    $path = 'storage/shops/';
+if ($type === 'shops') {
+    $path = 'shops/';
+} elseif ($type === 'products') {
+    $path = 'products/';
 }
-if($type === 'products'){
-    $path = 'storage/products/';
-}
-
 @endphp
 
-
 <div class="mt-2">
-    @if(empty($filename))
+    @if (empty($filename))
         <img src="{{ asset('images/no_images.jpg') }}" alt="No image available">
     @else
-        <img src="{{ Cloudinary::image($path . $filename)->encode() }}" alt="{{ $filename }}">
+        @php
+            // Cloudinary の画像 URL を生成
+            $cloudinaryUrl = Cloudinary::getCloudinary()->image($filename)->format('auto')->quality('auto')->secureUrl();
+        @endphp
+        <img src="{{ $cloudinaryUrl }}" alt="{{ $filename }}">
     @endif
 </div>
