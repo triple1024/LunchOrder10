@@ -14,7 +14,11 @@ if ($type === 'shops') {
     @else
         @php
             // Cloudinary の画像 URL を生成
-            $cloudinaryUrl = Cloudinary::getCloudinary()->image($filename)->format('auto')->quality('auto')->secureUrl();
+            $cloudinaryUrl = Cloudinary::url($filename, [
+                'secure' => true,
+                'format' => 'auto',
+                'quality' => 'auto',
+            ]);
         @endphp
         <img src="{{ $cloudinaryUrl }}" alt="{{ $filename }}">
     @endif
