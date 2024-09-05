@@ -1,5 +1,7 @@
 @php
 
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+
 if($type === 'shops'){
     $path = 'storage/shops/';
 }
@@ -12,8 +14,8 @@ if($type === 'products'){
 
 <div class="mt-2">
     @if(empty($filename))
-        <img src="{{ asset('images/no_images.jpg') }}">
+        <img src="{{ asset('images/no_images.jpg') }}" alt="No image available">
     @else
-        <img src="{{ asset($path . $filename)}}">
+        <img src="{{ Cloudinary::image($path . $filename)->encode() }}" alt="{{ $filename }}">
     @endif
 </div>
