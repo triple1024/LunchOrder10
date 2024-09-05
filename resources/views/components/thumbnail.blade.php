@@ -7,8 +7,11 @@ if ($type === 'shops') {
     $folder = 'products/';
 }
 
-// Cloudinary の URL を生成するための基本の URL プレフィックス
-$cloudinaryUrl = 'https://res.cloudinary.com/' . env('CLOUDINARY_CLOUD_NAME') . '/image/upload/' . $folder . $filename;
+$cloudinaryBaseUrl = 'https://res.cloudinary.com/' . env('CLOUDINARY_CLOUD_NAME') . '/image/upload/';
+
+// Cloudinary の URL を組み立てる
+$cloudinaryUrl = $cloudinaryBaseUrl . $folder . $filename;
+
 @endphp
 
 <div class="mt-2">
