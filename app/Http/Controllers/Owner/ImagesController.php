@@ -69,9 +69,12 @@ class ImagesController extends Controller
         $imageFiles = $request->file('files');
         if (!is_null($imageFiles)) {
             foreach ($imageFiles as $imageFile) {
-                // Cloudinaryに画像をアップロード
-                $uploadedFileUrl = Cloudinary::upload($imageFile->getRealPath())->getSecurePath();
-                $publicId = Cloudinary::getPublicId();
+                // Cloudinaryに画像をアップロードし、結果を取得
+                $uploadedFile = Cloudinary::upload($imageFile->getRealPath());
+
+                // アップロード結果からURLとpublic_idを取得
+                $uploadedFileUrl = $uploadedFile->getSecurePath();
+                $publicId = $uploadedFile->getPublicId();
 
                 // 画像情報をデータベースに保存
                 Image::create([
