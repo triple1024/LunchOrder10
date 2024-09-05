@@ -2,24 +2,19 @@
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 if ($type === 'shops') {
-    $path = 'shops/';
+    $folder = 'shops/';
 } elseif ($type === 'products') {
-    $path = 'products/';
+    $folder = 'products/';
 }
+
+// Cloudinary の URL を生成するための基本の URL プレフィックス
+$cloudinaryUrl = 'https://res.cloudinary.com/' . env('CLOUDINARY_CLOUD_NAME') . '/image/upload/' . $folder . $filename;
 @endphp
 
 <div class="mt-2">
     @if (empty($filename))
         <img src="{{ asset('images/no_images.jpg') }}" alt="No image available">
     @else
-        @php
-            // Cloudinary の画像 URL を生成
-            $cloudinaryUrl = Cloudinary::url($filename, [
-                'secure' => true,
-                'format' => 'auto',
-                'quality' => 'auto',
-            ]);
-        @endphp
         <img src="{{ $cloudinaryUrl }}" alt="{{ $filename }}">
     @endif
 </div>
