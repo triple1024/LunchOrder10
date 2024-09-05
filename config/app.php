@@ -160,6 +160,7 @@ return [
          * Package Service Providers...
          */
         Intervention\Image\ImageServiceProvider::class,
+        CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -185,6 +186,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         'InterventionImage' =>  Intervention\Image\Facades\Image::class,   // 'Intervention
         'Constant' => App\Constants\Common::class,
+        'Cloudinary' => CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::class,
     ])->toArray(),
 
 ];
