@@ -66,23 +66,18 @@ class ImagesController extends Controller
         //     }
         // }
 
+         // アップロードされたファイルを取得
         $imageFiles = $request->file('files');
-        if (!is_null($imageFiles)) {
+
+        // 複数のファイルがアップロードされている場合
+        if (is_array($imageFiles)) {
             foreach ($imageFiles as $imageFile) {
-                // Cloudinaryに画像をアップロードし、結果を取得
-                $uploadedFile = Cloudinary::upload($imageFile->getRealPath());
-
-                // アップロード結果からURLとpublic_idを取得
-                $uploadedFileUrl = $uploadedFile->getSecurePath();
-                $publicId = $uploadedFile->getPublicId();
-
-                // 画像情報をデータベースに保存
-                Image::create([
-                    'owner_id' => Auth::id(),
-                    'filename' => $uploadedFileUrl, // CloudinaryのURLを保存
-                    'public_id' => $publicId, // CloudinaryのPublic IDを保存（削除の際に使用）
-                ]);
+                // 各ファイルごとに処理
+                $this->uploadToCloudinaryAndSave($imageFile);
             }
+        } else {
+            // 単一のファイルがアップロードされた場合
+            $this->uploadToCloudinaryAndSave($imageFiles);
         }
 
 
@@ -166,5 +161,23 @@ class ImagesController extends Controller
         ->route('owner.images.index')
         ->with(['message' => '画像を削除しました。',
         'status' => 'alert']);
+    }
+
+    // Cloudinaryにアップロードしてデータベースに保存する処理を関数化
+    private function uploadToCloudinaryAndSave($imageFile)
+    {
+        // Cloudinaryに画像をアップロードし、結果を取得
+        $uploadedFile = Cloudinary::upload($imageFile->getRealPath());
+
+        // アップロード結果からURLとpublic_idを取得
+        $uploadedFileUrl = $uploadedFile->getSecurePath();
+        $publicId = $uploadedFile->getPublicId();
+
+        // 画像情報をデータベースに保存
+        Image::create([
+            'owner_id' => Auth::id(),
+            'filename' => $uploadedFileUrl, // CloudinaryのURLを保存
+            'public_id' => $publicId,       // CloudinaryのPublic IDを保存（削除の際に使用）
+        ]);
     }
 }
