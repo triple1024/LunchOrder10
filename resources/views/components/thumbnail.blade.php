@@ -13,6 +13,9 @@ if($type === 'products'){
     @if(empty($filename))
         <img src="{{ asset('images/no_images.jpg') }}" alt="No image available">
     @else
-        <img src="{{ Cloudinary::getUrl($filename) }}" alt="{{ $filename }}">
+        @php
+            $url = Cloudinary::url($filename);
+        @endphp
+        <img src="{{ $url }}" alt="{{ $filename }}">
     @endif
 </div>
