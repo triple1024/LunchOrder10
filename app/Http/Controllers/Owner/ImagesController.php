@@ -7,9 +7,12 @@ use App\Http\Requests\UploadImageRequest;
 use App\Services\ImageService;
 use App\Models\Food;
 use App\Models\Image;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+
+
 
 class ImagesController extends Controller
 {
@@ -52,13 +55,29 @@ class ImagesController extends Controller
      */
     public function store(UploadImageRequest $request)
     {
+        // $imageFiles = $request->file('files');
+        // if(!is_null($imageFiles)){
+        //     foreach($imageFiles as $imageFile){
+        //         $fileNameToStore = ImageService::upload($imageFile, 'products');
+        //         Image::create([
+        //             'owner_id' => Auth::id(),
+        //             'filename' => $fileNameToStore,
+        //         ]);
+        //     }
+        // }
+
         $imageFiles = $request->file('files');
-        if(!is_null($imageFiles)){
-            foreach($imageFiles as $imageFile){
-                $fileNameToStore = ImageService::upload($imageFile, 'products');
+        if (!is_null($imageFiles)) {
+            foreach ($imageFiles as $imageFile) {
+                // Cloudinaryに画像をアップロード
+                $uploadedFileUrl = Cloudinary::upload($imageFile->getRealPath())->getSecurePath();
+                $publicId = Cloudinary::getPublicId();
+
+                // 画像情報をデータベースに保存
                 Image::create([
                     'owner_id' => Auth::id(),
-                    'filename' => $fileNameToStore,
+                    'filename' => $uploadedFileUrl, // CloudinaryのURLを保存
+                    'public_id' => $publicId, // CloudinaryのPublic IDを保存（削除の際に使用）
                 ]);
             }
         }
@@ -128,12 +147,16 @@ class ImagesController extends Controller
             });
         }
 
-        $filepath = 'public/products/' . $image->filename;
+        // $filepath = 'public/products/' . $image->filename;
 
-        if(Storage::exists($filepath)){
-            Storage::delete($filepath);
-        }
+        // if(Storage::exists($filepath)){
+        //     Storage::delete($filepath);
+        // }
 
+        // Cloudinaryから画像を削除
+        Cloudinary::destroy($image->public_id); // public_idを使用して削除
+
+        // データベースから画像情報を削除
         Image::findOrFail($id)->delete();
 
         return redirect()
