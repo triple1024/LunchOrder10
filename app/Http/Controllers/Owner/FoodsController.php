@@ -175,7 +175,11 @@ class FoodsController extends Controller
 
                 Log::info('Food updated: ', $food->toArray());
 
-                $newQuantity = ($request->type === \Constant::FOOD_LIST['reduce']) ? $request->quantity * -1 : $request->quantity;
+                // $newQuantity = ($request->type === \Constant::FOOD_LIST['reduce']) ? $request->quantity * -1 : $request->quantity;
+                // $newQuantity = ($request->type === \Constant::FOOD_LIST['reduce']) ? max(0, $request->quantity * -1) : $request->quantity;
+                $newQuantity = ($request->type === \Constant::FOOD_LIST['reduce']) ? -$request->quantity : $request->quantity;
+
+
 
                 Stock::create([
                     'food_id' => $food->id,

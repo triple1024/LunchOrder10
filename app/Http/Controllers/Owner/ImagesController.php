@@ -39,6 +39,7 @@ class ImagesController extends Controller
         ->orderBy('updated_at', 'desc')  //表示順
         ->paginate(20);
 
+
         return view('owner.images.index', compact('images'));
     }
 

@@ -83,20 +83,29 @@
         </div>
     </div>
     <script>
-        const images = document.querySelectorAll('.image') //全てのimageタグを取得
+        const images = document.querySelectorAll('.image'); // 全ての image タグを取得
         images.forEach(image => {
-            image.addEventListener('click',function(e){ //クリックしたら
-                const imageName = e.target.dataset.id.substr(0,6) //data-idの６文字
-                const imageId = e.target.dataset.id.replace(imageName + '_','') //６文字カット
-                const imageFile = e.target.dataset.file
-                const imagePath = e.target.dataset.path
-                const modal = e.target.dataset.modal
+            image.addEventListener('click', function(e) { // クリックしたら
+                const imageName = e.target.dataset.id.substr(0, 6); // data-id の 6 文字
+                const imageId = e.target.dataset.id.replace(imageName + '_', ''); // 6 文字カット
+                const imageFile = e.target.dataset.file; // ファイル名
+                const imagePath = e.target.dataset.path; // 画像のパス（Cloudinary URL プレフィックス）
+                const modal = e.target.dataset.modal; // モーダル ID
 
-                //サムネイルと input type=hiddenのvalueに設定
-                document.getElementById(imageName + '_thumbnail').src = imagePath + '/' + imageFile
-                document.getElementById(imageName + '_hidden').value = imageId
-                MicroModal.close(modal); //モーダルを閉じる
-            }, )
+                // デバッグ: コンソールに値を表示
+                console.log('Image Name:', imageName);
+                console.log('Image ID:', imageId);
+                console.log('Image File:', imageFile);
+                console.log('Image Path:', imagePath);
+                console.log('Modal:', modal);
+
+                // サムネイルと input type=hidden の value に設定
+                document.getElementById(imageName + '_thumbnail').src = imagePath
+                document.getElementById(imageName + '_hidden').value = imageId;
+
+                // モーダルを閉じる
+                MicroModal.close(modal);
+            });
         });
 
             document.addEventListener("DOMContentLoaded", function() {

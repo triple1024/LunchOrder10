@@ -49,11 +49,11 @@
                     <div class="bg-white shadow-md rounded-lg mb-2 w-1/3 mx-auto overflow-auto">
                         <h2 class="text-lg font-bold {{ $bgColor }} px-4 py-2">{{ $category }}の在庫</h2>
                         <div class="max-h-96 overflow-y-auto p-6">
-                            <table class="min-w-full bg-white mb-4">
+                            <table class="min-w-full bg-white mb-4 table-fixed">
                                 <thead>
                                     <tr>
-                                        <th class="py-2 px-4 border-b">食品名</th>
-                                        <th class="py-2 px-4 border-b">数量</th>
+                                        <th class="py-2 px-4 border-b w-2/3">食品名</th> <!-- 幅を2/3に設定 -->
+                                        <th class="py-2 px-4 border-b w-1/3 text-center">数量</th> <!-- 幅を1/3に設定 -->
                                     </tr>
                                 </thead>
                                 <tbody class="sortable-list">

@@ -67,17 +67,40 @@ class OrderListController extends Controller
 
     public function cancel(Order $order)
     {
-        // 在庫を元に戻す処理
-        foreach ($order->foods as $food) {
-            foreach ($food->stock as $stock) {
-                $stock->quantity += $food->pivot->quantity; // 在庫量を元に戻す
-                $stock->save();
-            }
-        }
-        // 注文をキャンセル（削除）
-        $order->delete();
+        DB::beginTransaction();
 
-        return redirect()->route('owner.orders.index')->with('status', '注文がキャンセルされました。');
+        try {
+            // 在庫を元に戻す処理
+            foreach ($order->foods as $food) {
+                $quantityToReturn = $food->pivot->quantity; // 注文時の個数
+
+                foreach ($food->stock as $stock) {
+                    if ($quantityToReturn > 0) {
+                        // 在庫に戻す個数を計算
+                        $returnAmount = min($quantityToReturn, $stock->quantity);
+                        $stock->quantity += $returnAmount;
+                        $stock->save();
+
+                        // 戻した分だけ減らす
+                        $quantityToReturn -= $returnAmount;
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            // 注文をキャンセル（削除）
+            $order->delete();
+
+            DB::commit();
+
+            return redirect()->route('owner.orders.index')->with('status', '注文がキャンセルされました。');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error('注文のキャンセル中にエラーが発生しました: ' . $e->getMessage());
+            return redirect()->route('owner.orders.index')->with('error', '注文のキャンセルに失敗しました。');
+        }
     }
+
 
 }
