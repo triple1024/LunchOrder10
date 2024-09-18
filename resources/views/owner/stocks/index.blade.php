@@ -9,28 +9,50 @@
         <div class="w-full  mx-auto sm:px-6 lg:px-8">
             <div class="flex space-x-4">
                 <div class="bg-white shadow-md rounded-lg mb-2 w-1/3 overflow-auto">
-                    <h2 class="text-lg font-bold bg-inherit px-4 py-2">本日の注文</h2>
-                    <div class="max-h-96 overflow-y-auto p-6">
-                        <table class="min-w-full bg-white">
-                            <thead>
-                                <tr>
-                                    <th class="py-2 px-4 border-b">ユーザー名</th>
-                                    <th class="py-2 px-4 border-b">食品名</th>
-                                    <th class="py-2 px-4 border-b">注文数</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($todayOrders as $order)
-                                    <tr>
-                                        <td class="py-2 px-4 border-b">{{ $order['user_name'] }}</td>
-                                        <td class="py-2 px-4 border-b">{{ $order['food_name'] }}</td>
-                                        <td class="py-2 px-4 border-b text-center">{{ $order['quantity'] }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <button onclick="location.href='{{ route('owner.orders.index')}}'" class="mt-8 bg-blue-500 text-white py-2 px-4 rounded">注文履歴(一覧)に戻る</button>
+                    <div class="flex justify-between px-6 py-2">
+                        <h2 class="text-lg font-bold bg-inherit mt-2">本日の注文</h2>
+                        <button onclick="location.href='{{ route('owner.orders.index')}}'" class=" bg-blue-500 text-white p-2 rounded">注文履歴に戻る</button>
                     </div>
+                    <div class="t-order overflow-y-auto px-6">
+                        @foreach($sortedOrdersByCategory as $categoryId => $orders)
+                            @php
+                                // カテゴリー名を取得
+                                $categoryName = $primaryCategoryNames[$categoryId] ?? 'Unknown';
+
+                                // カテゴリに応じた背景色を設定
+                                switch ($categoryName) {
+                                    case '弁当': // カテゴリ1に対する背景色
+                                        $bgColor = 'bg-orange-500';
+                                        break;
+                                    case 'パン': // カテゴリ2に対する背景色
+                                        $bgColor = 'bg-cyan-300';
+                                        break;
+                                    default: // デフォルトの背景色
+                                        $bgColor = 'bg-gray-500';
+                                }
+                            @endphp
+                            <h2 class="text-lg font-semibold mt-4 {{ $bgColor }} text-center rounded whitespace-nowrap w-24">{{ $categoryName }}</h2>
+                            <table class="min-w-full bg-white mt-4">
+                                <thead>
+                                    <tr>
+                                        <th class="py-2 px-4 border-b whitespace-nowrap">名前</th>
+                                        <th class="py-2 px-4 border-b">食品名</th>
+                                        <th class="py-2 px-4 border-b whitespace-nowrap">注文数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($orders as $order)
+                                        <tr>
+                                            <td class="py-2 px-4 border-b">{{ $order['user_name'] }}</td>
+                                            <td class="py-2 px-4 border-b">{{ $order['food_name'] }}</td>
+                                            <td class="py-2 px-4 border-b text-center">{{ $order['quantity'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endforeach
+                    </div>
+
                 </div>
                 @foreach ($stocksByCategory as $category => $stocks)
                     @php
@@ -48,7 +70,7 @@
                     @endphp
                     <div class="bg-white shadow-md rounded-lg mb-2 w-1/3 mx-auto overflow-auto">
                         <h2 class="text-lg font-bold {{ $bgColor }} px-4 py-2">{{ $category }}の在庫</h2>
-                        <div class="max-h-96 overflow-y-auto p-6">
+                        <div class="h-stock overflow-y-auto p-6">
                             <table class="min-w-full bg-white mb-4 table-fixed">
                                 <thead>
                                     <tr>
@@ -79,6 +101,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
     <script>
+        // Sortable
     document.addEventListener('DOMContentLoaded', function () {
         // 各 tbody に対して Sortable を初期化
         document.querySelectorAll('tbody.sortable-list').forEach(function (tbody) {

@@ -52,24 +52,79 @@ class StockController extends Controller
                 return [
                     'user_name' => $order->user->name ?? 'Unknown', // ユーザー名
                     'food_name' => $foodNames[$food->id] ?? 'Unknown', // 食品名を取得
+                    'food_id' => $food->id, // 食品IDも取得
                     'quantity' => $food->pivot->quantity
                 ];
             });
         });
 
-    // PrimaryCategory別に在庫をグループ化
-    $stocksByCategory = $stocks->groupBy(function ($stock) use ($foodNames) {
-        $foodName = $foodNames[$stock->food_id] ?? 'Unknown'; // 食品名を取得
+    // 在庫の順序に基づいて「本日の注文」を並び替える
+    $sortedOrders = $todayOrders->sortBy(function ($order) use ($stocks) {
+        // 在庫データから対応する食品のsort_orderを取得
+        $stock = $stocks->firstWhere('food_id', $order['food_id']);
+        return $stock ? $stock->sort_order : PHP_INT_MAX; // 在庫が見つからない場合は最後に並べる
+    });
+
+    //    // プライマリーカテゴリー順序を取得
+    // $primaryCategoryOrder = $stocks->map(function ($stock) {
+    //     $food = DB::table('food')->where('id', $stock->food_id)->first();
+    //     $primaryCategory = DB::table('secondary_categories')
+    //         ->join('primary_categories', 'secondary_categories.primary_category_id', '=', 'primary_categories.id')
+    //         ->where('secondary_categories.id', $food->secondary_category_id)
+    //         ->select('primary_categories.name', 'primary_categories.id')
+    //         ->first();
+    //     return $primaryCategory ? $primaryCategory->id : null;
+    // })->unique()->values()->toArray();
+
+     // プライマリーカテゴリーのID順を取得
+    $primaryCategoryOrder = DB::table('primary_categories')
+    ->orderBy('id')
+    ->pluck('id')
+    ->toArray();
+
+    // 今日の注文をプライマリーカテゴリーでグループ化
+    $todayOrdersByCategory = $sortedOrders->groupBy(function ($order) {
+        $food = DB::table('food')->where('id', $order['food_id'])->first();
+        $primaryCategory = DB::table('secondary_categories')
+            ->join('primary_categories', 'secondary_categories.primary_category_id', '=', 'primary_categories.id')
+            ->where('secondary_categories.id', $food->secondary_category_id)
+            ->select('primary_categories.name', 'primary_categories.id')
+            ->first();
+        return $primaryCategory ? $primaryCategory->id : null;
+    });
+
+    // プライマリーカテゴリー名を取得
+    $primaryCategoryNames = DB::table('primary_categories')
+    ->whereIn('id', $primaryCategoryOrder)
+    ->pluck('name', 'id');
+
+    // プライマリーカテゴリー別に注文を並び替え
+    $sortedOrdersByCategory = collect($primaryCategoryOrder)->mapWithKeys(function ($categoryId) use ($todayOrdersByCategory) {
+        return [$categoryId => $todayOrdersByCategory->get($categoryId, collect())];
+    });
+
+    // PrimaryCategory別に在庫をグループ化し、ID順に並べ替え
+    $stocksByCategory = $stocks->groupBy(function ($stock) {
         $food = DB::table('food')->where('id', $stock->food_id)->first();
         $primaryCategory = DB::table('secondary_categories')
             ->join('primary_categories', 'secondary_categories.primary_category_id', '=', 'primary_categories.id')
             ->where('secondary_categories.id', $food->secondary_category_id)
-            ->value('primary_categories.name');
+            ->select('primary_categories.name', 'primary_categories.id')
+            ->first();
 
-        return $primaryCategory;
+        return $primaryCategory ? $primaryCategory->id : null;
+    })->sortKeys(); // ID順に並べ替え
+
+    // PrimaryCategory名も取得
+    $stocksByCategory = $stocksByCategory->mapWithKeys(function ($stocks, $categoryId) {
+        $primaryCategoryName = DB::table('primary_categories')
+            ->where('id', $categoryId)
+            ->value('name');
+
+        return [$primaryCategoryName => $stocks];
     });
 
-    return view('owner.stocks.index', compact('stocks', 'todayOrders', 'foodNames', 'stocksByCategory'));
+    return view('owner.stocks.index', compact('stocks', 'sortedOrdersByCategory', 'foodNames','primaryCategoryNames', 'stocksByCategory'));
 }
 
 

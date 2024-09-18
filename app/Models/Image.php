@@ -23,6 +23,7 @@ class Image extends Model
         return $this->belongsTo(Owner::class);
     }
 
+
         public function getImageUrlAttribute()
     {
         return Cloudinary::getUrl($this->public_id);

@@ -63,11 +63,11 @@ class CartController extends Controller
         $secondaryCategoryId = $food->secondary_category_id;
 
           // secondary_category_idが1、2、または13の場合はカート内で合計1つまでしか注文できない
-        if (in_array($secondaryCategoryId, [1, 2, 13])) {
+        if (in_array($secondaryCategoryId, [1, 2, 5])) {
             $existingFoods = $cart->cartfoods()->get();
             $totalQuantityForCategory = 0;
             foreach ($existingFoods as $existingFood) {
-                if (in_array($existingFood->secondary_category_id, [1, 2, 13])) {
+                if (in_array($existingFood->secondary_category_id, [1, 2, 5])) {
                     $totalQuantityForCategory += $existingFood->pivot->quantity;
                 }
             }

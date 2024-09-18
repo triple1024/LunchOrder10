@@ -30,20 +30,6 @@ class RiceController extends Controller
             return $next($request);
         });
 
-        // {
-        //     $this->middleware('auth:owners')->only(['edit', 'update', 'destroy']);
-
-        //     $this->middleware(function($request, $next){
-        //         $id = $request->route()->parameter('rice');
-        //         if(!is_null($id)) {
-        //             $rice = Rice::find($id);
-        //             if(!$rice || $rice->owner_id !== Auth::id()) {
-        //                 abort(404);
-        //             }
-        //         }
-        //         return $next($request);
-        //     })->only(['edit', 'update', 'destroy']);
-        // }
 
     }
     /**

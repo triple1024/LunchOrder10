@@ -20,24 +20,28 @@ class ImagesController extends Controller
     {
         $this->middleware('auth:owners');
 
-        $this->middleware(function($request, $next){
-            $id = $request->route()->parameter('image');//shopのid取得
-            if(!is_null($id)){ //null判定
-            $imagesOwnerId = Image::findOrFail($id)->owner->id;
-                $imageId = (int)$imagesOwnerId;//キャスト文字列→数値に型変換
-                if($imageId !== Auth::id()){
-                    abort(404);//404画面表示
-                }
-            }
-            return $next($request);
-        });
+        // $this->middleware(function($request, $next){
+        //     $id = $request->route()->parameter('image');//shopのid取得
+        //     if(!is_null($id)){ //null判定
+        //     $imagesOwnerId = Image::findOrFail($id)->owner->id;
+        //         $imageId = (int)$imagesOwnerId;//キャスト文字列→数値に型変換
+        //         if($imageId !== Auth::id()){
+        //             abort(404);//404画面表示
+        //         }
+        //     }
+        //     return $next($request);
+        // });
+
     }
 
     public function index()
     {
-        $images = Image::where('owner_id', Auth::id())
-        ->orderBy('updated_at', 'desc')  //表示順
-        ->paginate(20);
+        // $images = Image::where('owner_id', Auth::id())
+        // ->orderBy('updated_at', 'desc')  //表示順
+        // ->paginate(20);
+
+         // 全てのオーナーの画像を取得する
+        $images = Image::orderBy('updated_at', 'desc')->paginate(20);
 
 
         return view('owner.images.index', compact('images'));
