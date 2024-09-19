@@ -34,6 +34,7 @@ Route::prefix('orders')->
 Route::prefix('cart')->
     middleware('auth:users')->group(function (){
     Route::get('/',[CartController::class, 'index'])->name('cart.index');
+    Route::post('update/{food}', [CartController::class, 'update'])->name('cart.update');
     Route::post('add',[CartController::class,'add'])->name('cart.add');
     Route::post('delete/{eat}',[CartController::class,'delete'])->name('cart.delete');
     Route::post('checkout',[CartController::class,'checkout'])->name('cart.checkout');

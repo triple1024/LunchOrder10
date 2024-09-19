@@ -26,20 +26,23 @@
                                     @endif
                                 </div>
                                 <div class="md:w-4/12 md:ml-2">
-                                    <label class="mr-3">数量</label>
-                                    <select name="quantity" class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10 mr-8">
-                                        @php
-                                            // 選択されている食品のsecondaryCategoryのIDを取得
-                                            $secondaryCategoryId = $food->secondaryCategory->id;
-                                            // secondaryCategoryのIDに応じて最大数量を設定
-                                            $maxQuantity = ($secondaryCategoryId === 3 || $secondaryCategoryId === 4) ? 2 : 1;
-                                        @endphp
-                                        @for($i = 1; $i <= $maxQuantity; $i++)
-                                            <option value="{{ $i }}" {{ $i == $food->pivot->quantity ? 'selected' : '' }}>
-                                                {{ $i }}
-                                            </option>
-                                        @endfor
-                                    </select>
+                                    <form action="{{ route('user.cart.update', ['food' => $food->id]) }}" method="post">
+                                        @csrf
+                                        <div class="flex items-center">
+                                            <label class="mr-3">数量</label>
+                                            <select name="quantity" class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10 mr-8" onchange="this.form.submit()">
+                                                @php
+                                                    $secondaryCategoryId = $food->secondaryCategory->id;
+                                                    $maxQuantity = ($secondaryCategoryId === 3 || $secondaryCategoryId === 4) ? 2 : 1;
+                                                @endphp
+                                                @for($i = 1; $i <= $maxQuantity; $i++)
+                                                    <option value="{{ $i }}" {{ $i == $food->pivot->quantity ? 'selected' : '' }}>
+                                                        {{ $i }}
+                                                    </option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div class="md:w-2/12">
                                     <form action="{{ route('user.cart.delete', ['eat' => $food->id]) }}" method="post">

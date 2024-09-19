@@ -156,9 +156,37 @@ class CartController extends Controller
         return redirect()->route('user.cart.index');
     }
 
+    public function update(Request $request, $foodId)
+    {
+        // バリデーション
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        // ユーザーのカートを取得
+        $cart = Cart::where('user_id', Auth::id())->first();
+
+        if (!$cart) {
+            return redirect()->route('user.cart.index')->with('error', 'カートが見つかりませんでした。');
+        }
+
+        // カート内の特定の食べ物を取得
+        $cartFood = $cart->cartfoods()->where('food_id', $foodId)->first();
+
+        if ($cartFood) {
+            // 新しい数量を更新
+            $cartFood->pivot->update(['quantity' => $request->quantity]);
+        }
+
+        return redirect()->route('user.cart.index')->with('success', '数量が更新されました。');
+    }
+
     public function checkout()
     {
         $cart = Cart::with(['cartfoods', 'cartfoods.rice'])->where('user_id', Auth::id())->first();
+
+        // カートの状態を確認
+        // dd($cart);
 
         if (!$cart) {
             return redirect()->route('user.cart.index')->with('error', 'カートが空です。');
@@ -173,18 +201,29 @@ class CartController extends Controller
 
          // カート内のフードを注文に追加し、在庫を減らす
         foreach ($cart->cartfoods as $food) {
+
             $order->foods()->attach($food->id, ['quantity' => $food->pivot->quantity]);
 
-            // 在庫を減らす
-            $stock = Stock::where('food_id', $food->id)->first();
-            if ($stock) {
-                $stock->quantity -= $food->pivot->quantity;
-                if ($stock->quantity <= 0) {
-                    $stock->quantity = 0;
-                    $stock->is_selling = 0;
+                   // 在庫を減らす
+                $stock = Stock::where('food_id', $food->id)->first();
+                // dd($stock, $food); // 更新前の状態を確認
+
+                if ($stock) {
+                    $stock->quantity -= $food->pivot->quantity;
+
+
+                    // 在庫が0以下になる場合は、Food の is_selling を 0 に設定
+                    if ($stock->quantity <= 0) {
+                        $stock->quantity = 0;
+                        $food->is_selling = 0;  // Food モデルの is_selling を 0 に設定
+                    } else {
+                        $food->is_selling = 1;  // 在庫が残っている場合は、is_selling を 1 に設定
+                    }
+
+
+                    $stock->save();
+                    $food->save();  // Food モデルの更新を保存
                 }
-                $stock->save();
-            }
         }
 
         // カートをクリア

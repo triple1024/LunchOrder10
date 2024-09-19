@@ -58,6 +58,13 @@ class StockController extends Controller
             });
         });
 
+     // secondary_categories.idが5の食品を除外
+    $excludedSecondaryCategoryId = 5;
+        $todayOrders = $todayOrders->filter(function ($order) use ($excludedSecondaryCategoryId) {
+            $food = DB::table('food')->where('id', $order['food_id'])->first();
+            return $food && $food->secondary_category_id != $excludedSecondaryCategoryId;
+        });
+
     // 在庫の順序に基づいて「本日の注文」を並び替える
     $sortedOrders = $todayOrders->sortBy(function ($order) use ($stocks) {
         // 在庫データから対応する食品のsort_orderを取得
