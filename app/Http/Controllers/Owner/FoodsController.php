@@ -199,6 +199,14 @@ class FoodsController extends Controller
                 throw $e; // エラーを再スロー
             }
 
+              // 在庫の増減のみが行われた場合、在庫管理ページにリダイレクト
+            if ($request->filled('quantity') && $request->input('quantity') > 0) {
+                return redirect()
+                    ->route('owner.stocks.index')
+                    ->with(['message' => '在庫が更新されました。',
+                    'status' => 'info']);
+            }
+
             // 成功メッセージを表示して食品一覧にリダイレクト
             return redirect()
                 ->route('owner.foods.index')

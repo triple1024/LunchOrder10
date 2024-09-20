@@ -160,7 +160,4 @@
     });
 </script>
 
-
-
-
 </x-app-layout>
