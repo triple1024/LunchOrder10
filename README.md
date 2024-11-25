@@ -35,29 +35,29 @@
 
 ### 手順
 1. リポジトリをクローン:
-    git clone https://github.com/triple1024/LunchOrder10.git
+    git clone https://github.com/triple1024/LunchOrder10.git<br>
     cd LunchOrder10
 
 2. 依存関係のインストール
-    composer install
-    npm install
-    npm run dev
+    composer install<br>
+    npm install<br>
+    npm run dev<br>
 
 3. 環境変数の設定
 
     .env ファイル内で、以下の項目を設定してください
 
-    DB_CONNECTION=pgsql
-    DB_HOST=127.0.0.1
-    DB_PORT=5432
-    DB_DATABASE=your_database_name
-    DB_USERNAME=your_database_user
+    DB_CONNECTION=pgsql<br>
+    DB_HOST=127.0.0.1<br>
+    DB_PORT=5432<br>
+    DB_DATABASE=your_database_name<br>
+    DB_USERNAME=your_database_user<br>
     DB_PASSWORD=your_database_password
 
     Cloudinaryの設定（画像アップロード用）
 
-    CLOUDINARY_URL=your_cloudinary_url
-    CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+    CLOUDINARY_URL=your_cloudinary_url<br>
+    CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name<br>
     CLOUDINARY_API_KEY=your_cloudinary_api_key
 
 
